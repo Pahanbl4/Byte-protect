@@ -1,0 +1,598 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище RecruitmentDBModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <!--Ошибки, обнаруженные при создании:
+предупреждение 6002: В таблице или представлении "RecruitmentDB.dbo.BasicInfo" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.-->
+        <EntityType Name="BasicInfo">
+          <Key>
+            <PropertyRef Name="IdCandidate" />
+            <PropertyRef Name="Outcome" />
+          </Key>
+          <Property Name="IdCandidate" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Image" Type="image" />
+          <Property Name="Resume" Type="text" />
+          <Property Name="Outcome" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Candidate">
+          <Key>
+            <PropertyRef Name="IdCandidate" />
+          </Key>
+          <Property Name="IdCandidate" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdEducation" Type="int" Nullable="false" />
+          <Property Name="IdWorkExperience" Type="int" />
+          <Property Name="IdProfessionalSkills" Type="int" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="E-mail" Type="nvarchar" MaxLength="50" />
+          <Property Name="MobilePhone" Type="int" />
+          <Property Name="HomePhone" Type="int" Nullable="false" />
+          <Property Name="Skype" Type="nvarchar" MaxLength="50" />
+          <Property Name="BirtchDate" Type="date" Nullable="false" />
+          <Property Name="Residence" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="MilitaryAttitude" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="DetailedSkill">
+          <Key>
+            <PropertyRef Name="IdDetailedSkill" />
+          </Key>
+          <Property Name="IdDetailedSkill" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Lavel(from 1 to 10)" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Education">
+          <Key>
+            <PropertyRef Name="IdEducation" />
+          </Key>
+          <Property Name="IdEducation" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdKnowledgeOfLanguages" Type="int" Nullable="false" />
+          <Property Name="EducationalEstablishment" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="DegreeInformation" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="AdmissionYear" Type="date" Nullable="false" />
+          <Property Name="GraduationYear" Type="date" Nullable="false" />
+          <Property Name="PostgraduateWork(ForBY)" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Faculty" Type="nvarchar" MaxLength="50" />
+          <Property Name="Department" Type="nvarchar" MaxLength="50" />
+          <Property Name="EducationForm" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="KnowledgeOfLanguages">
+          <Key>
+            <PropertyRef Name="IdKnowledgeOfLanguages" />
+          </Key>
+          <Property Name="IdKnowledgeOfLanguages" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="LavelLanguages" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ProfessionalSkills">
+          <Key>
+            <PropertyRef Name="IdProfessionalSkills" />
+          </Key>
+          <Property Name="IdProfessionalSkills" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdSkill" Type="int" Nullable="false" />
+          <Property Name="YearsOfExperience" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="AdditionalInformation" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Skills">
+          <Key>
+            <PropertyRef Name="IdSkill" />
+          </Key>
+          <Property Name="IdSkill" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="IdDetailedSkill" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="WorkExperience">
+          <Key>
+            <PropertyRef Name="IdWorkExperience" />
+          </Key>
+          <Property Name="IdWorkExperience" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CompanyName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Position" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="StartDate" Type="date" Nullable="false" />
+          <Property Name="EndDate" Type="date" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_BasicInfo_Candidate">
+          <End Role="Candidate" Type="Self.Candidate" Multiplicity="1" />
+          <End Role="BasicInfo" Type="Self.BasicInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Candidate">
+              <PropertyRef Name="IdCandidate" />
+            </Principal>
+            <Dependent Role="BasicInfo">
+              <PropertyRef Name="IdCandidate" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Candidate_Education">
+          <End Role="Education" Type="Self.Education" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Candidate" Type="Self.Candidate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Education">
+              <PropertyRef Name="IdEducation" />
+            </Principal>
+            <Dependent Role="Candidate">
+              <PropertyRef Name="IdEducation" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Candidate_ProfessionalSkills">
+          <End Role="ProfessionalSkills" Type="Self.ProfessionalSkills" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Candidate" Type="Self.Candidate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProfessionalSkills">
+              <PropertyRef Name="IdProfessionalSkills" />
+            </Principal>
+            <Dependent Role="Candidate">
+              <PropertyRef Name="IdProfessionalSkills" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Candidate_WorkExperience">
+          <End Role="WorkExperience" Type="Self.WorkExperience" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Candidate" Type="Self.Candidate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WorkExperience">
+              <PropertyRef Name="IdWorkExperience" />
+            </Principal>
+            <Dependent Role="Candidate">
+              <PropertyRef Name="IdWorkExperience" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Education_KnowledgeOfLanguages">
+          <End Role="KnowledgeOfLanguages" Type="Self.KnowledgeOfLanguages" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Education" Type="Self.Education" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="KnowledgeOfLanguages">
+              <PropertyRef Name="IdKnowledgeOfLanguages" />
+            </Principal>
+            <Dependent Role="Education">
+              <PropertyRef Name="IdKnowledgeOfLanguages" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProfessionalSkills_Skills">
+          <End Role="Skills" Type="Self.Skills" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ProfessionalSkills" Type="Self.ProfessionalSkills" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Skills">
+              <PropertyRef Name="IdSkill" />
+            </Principal>
+            <Dependent Role="ProfessionalSkills">
+              <PropertyRef Name="IdSkill" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Skills_DetailedSkill">
+          <End Role="DetailedSkill" Type="Self.DetailedSkill" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Skills" Type="Self.Skills" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DetailedSkill">
+              <PropertyRef Name="IdDetailedSkill" />
+            </Principal>
+            <Dependent Role="Skills">
+              <PropertyRef Name="IdDetailedSkill" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище RecruitmentDBModelContainer">
+          <EntitySet Name="Candidate" EntityType="Self.Candidate" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DetailedSkill" EntityType="Self.DetailedSkill" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Education" EntityType="Self.Education" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="KnowledgeOfLanguages" EntityType="Self.KnowledgeOfLanguages" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProfessionalSkills" EntityType="Self.ProfessionalSkills" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Skills" EntityType="Self.Skills" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WorkExperience" EntityType="Self.WorkExperience" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BasicInfo" EntityType="Self.BasicInfo" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [BasicInfo].[IdCandidate] AS [IdCandidate], 
+    [BasicInfo].[Image] AS [Image], 
+    [BasicInfo].[Resume] AS [Resume], 
+    [BasicInfo].[Outcome] AS [Outcome]
+    FROM [dbo].[BasicInfo] AS [BasicInfo]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_BasicInfo_Candidate" Association="Self.FK_BasicInfo_Candidate">
+            <End Role="Candidate" EntitySet="Candidate" />
+            <End Role="BasicInfo" EntitySet="BasicInfo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Candidate_Education" Association="Self.FK_Candidate_Education">
+            <End Role="Education" EntitySet="Education" />
+            <End Role="Candidate" EntitySet="Candidate" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Candidate_ProfessionalSkills" Association="Self.FK_Candidate_ProfessionalSkills">
+            <End Role="ProfessionalSkills" EntitySet="ProfessionalSkills" />
+            <End Role="Candidate" EntitySet="Candidate" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Candidate_WorkExperience" Association="Self.FK_Candidate_WorkExperience">
+            <End Role="WorkExperience" EntitySet="WorkExperience" />
+            <End Role="Candidate" EntitySet="Candidate" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Education_KnowledgeOfLanguages" Association="Self.FK_Education_KnowledgeOfLanguages">
+            <End Role="KnowledgeOfLanguages" EntitySet="KnowledgeOfLanguages" />
+            <End Role="Education" EntitySet="Education" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProfessionalSkills_Skills" Association="Self.FK_ProfessionalSkills_Skills">
+            <End Role="Skills" EntitySet="Skills" />
+            <End Role="ProfessionalSkills" EntitySet="ProfessionalSkills" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Skills_DetailedSkill" Association="Self.FK_Skills_DetailedSkill">
+            <End Role="DetailedSkill" EntitySet="DetailedSkill" />
+            <End Role="Skills" EntitySet="Skills" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="RecruitmentDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Candidate">
+          <Key>
+            <PropertyRef Name="IdCandidate" />
+          </Key>
+          <Property Name="IdCandidate" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdEducation" Type="Int32" Nullable="false" />
+          <Property Name="IdWorkExperience" Type="Int32" />
+          <Property Name="IdProfessionalSkills" Type="Int32" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="E_mail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MobilePhone" Type="Int32" />
+          <Property Name="HomePhone" Type="Int32" Nullable="false" />
+          <Property Name="Skype" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="BirtchDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Residence" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MilitaryAttitude" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="BasicInfo" Relationship="Self.FK_BasicInfo_Candidate" FromRole="Candidate" ToRole="BasicInfo" />
+          <NavigationProperty Name="Education" Relationship="Self.FK_Candidate_Education" FromRole="Candidate" ToRole="Education" />
+          <NavigationProperty Name="ProfessionalSkills" Relationship="Self.FK_Candidate_ProfessionalSkills" FromRole="Candidate" ToRole="ProfessionalSkills" />
+          <NavigationProperty Name="WorkExperience" Relationship="Self.FK_Candidate_WorkExperience" FromRole="Candidate" ToRole="WorkExperience" />
+        </EntityType>
+        <EntityType Name="DetailedSkill">
+          <Key>
+            <PropertyRef Name="IdDetailedSkill" />
+          </Key>
+          <Property Name="IdDetailedSkill" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Lavel_from_1_to_10_" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Skills" Relationship="Self.FK_Skills_DetailedSkill" FromRole="DetailedSkill" ToRole="Skills" />
+        </EntityType>
+        <EntityType Name="Education">
+          <Key>
+            <PropertyRef Name="IdEducation" />
+          </Key>
+          <Property Name="IdEducation" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdKnowledgeOfLanguages" Type="Int32" Nullable="false" />
+          <Property Name="EducationalEstablishment" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DegreeInformation" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="AdmissionYear" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="GraduationYear" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="PostgraduateWork_ForBY_" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Faculty" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Department" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EducationForm" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Candidate" Relationship="Self.FK_Candidate_Education" FromRole="Education" ToRole="Candidate" />
+          <NavigationProperty Name="KnowledgeOfLanguages" Relationship="Self.FK_Education_KnowledgeOfLanguages" FromRole="Education" ToRole="KnowledgeOfLanguages" />
+        </EntityType>
+        <EntityType Name="KnowledgeOfLanguages">
+          <Key>
+            <PropertyRef Name="IdKnowledgeOfLanguages" />
+          </Key>
+          <Property Name="IdKnowledgeOfLanguages" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="LavelLanguages" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Education" Relationship="Self.FK_Education_KnowledgeOfLanguages" FromRole="KnowledgeOfLanguages" ToRole="Education" />
+        </EntityType>
+        <EntityType Name="ProfessionalSkills">
+          <Key>
+            <PropertyRef Name="IdProfessionalSkills" />
+          </Key>
+          <Property Name="IdProfessionalSkills" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdSkill" Type="Int32" Nullable="false" />
+          <Property Name="YearsOfExperience" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="AdditionalInformation" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Candidate" Relationship="Self.FK_Candidate_ProfessionalSkills" FromRole="ProfessionalSkills" ToRole="Candidate" />
+          <NavigationProperty Name="Skills" Relationship="Self.FK_ProfessionalSkills_Skills" FromRole="ProfessionalSkills" ToRole="Skills" />
+        </EntityType>
+        <EntityType Name="Skills">
+          <Key>
+            <PropertyRef Name="IdSkill" />
+          </Key>
+          <Property Name="IdSkill" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IdDetailedSkill" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="DetailedSkill" Relationship="Self.FK_Skills_DetailedSkill" FromRole="Skills" ToRole="DetailedSkill" />
+          <NavigationProperty Name="ProfessionalSkills" Relationship="Self.FK_ProfessionalSkills_Skills" FromRole="Skills" ToRole="ProfessionalSkills" />
+        </EntityType>
+        <EntityType Name="WorkExperience">
+          <Key>
+            <PropertyRef Name="IdWorkExperience" />
+          </Key>
+          <Property Name="IdWorkExperience" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CompanyName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Position" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="EndDate" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="Candidate" Relationship="Self.FK_Candidate_WorkExperience" FromRole="WorkExperience" ToRole="Candidate" />
+        </EntityType>
+        <EntityType Name="BasicInfo">
+          <Key>
+            <PropertyRef Name="IdCandidate" />
+            <PropertyRef Name="Outcome" />
+          </Key>
+          <Property Name="IdCandidate" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Image" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="Resume" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Outcome" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Candidate" Relationship="Self.FK_BasicInfo_Candidate" FromRole="BasicInfo" ToRole="Candidate" />
+        </EntityType>
+        <Association Name="FK_BasicInfo_Candidate">
+          <End Role="Candidate" Type="Self.Candidate" Multiplicity="1" />
+          <End Role="BasicInfo" Type="Self.BasicInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Candidate">
+              <PropertyRef Name="IdCandidate" />
+            </Principal>
+            <Dependent Role="BasicInfo">
+              <PropertyRef Name="IdCandidate" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Candidate_Education">
+          <End Role="Education" Type="Self.Education" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Candidate" Type="Self.Candidate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Education">
+              <PropertyRef Name="IdEducation" />
+            </Principal>
+            <Dependent Role="Candidate">
+              <PropertyRef Name="IdEducation" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Candidate_ProfessionalSkills">
+          <End Role="ProfessionalSkills" Type="Self.ProfessionalSkills" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Candidate" Type="Self.Candidate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProfessionalSkills">
+              <PropertyRef Name="IdProfessionalSkills" />
+            </Principal>
+            <Dependent Role="Candidate">
+              <PropertyRef Name="IdProfessionalSkills" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Candidate_WorkExperience">
+          <End Role="WorkExperience" Type="Self.WorkExperience" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Candidate" Type="Self.Candidate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WorkExperience">
+              <PropertyRef Name="IdWorkExperience" />
+            </Principal>
+            <Dependent Role="Candidate">
+              <PropertyRef Name="IdWorkExperience" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Skills_DetailedSkill">
+          <End Role="DetailedSkill" Type="Self.DetailedSkill" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Skills" Type="Self.Skills" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DetailedSkill">
+              <PropertyRef Name="IdDetailedSkill" />
+            </Principal>
+            <Dependent Role="Skills">
+              <PropertyRef Name="IdDetailedSkill" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Education_KnowledgeOfLanguages">
+          <End Role="KnowledgeOfLanguages" Type="Self.KnowledgeOfLanguages" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Education" Type="Self.Education" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="KnowledgeOfLanguages">
+              <PropertyRef Name="IdKnowledgeOfLanguages" />
+            </Principal>
+            <Dependent Role="Education">
+              <PropertyRef Name="IdKnowledgeOfLanguages" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProfessionalSkills_Skills">
+          <End Role="Skills" Type="Self.Skills" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ProfessionalSkills" Type="Self.ProfessionalSkills" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Skills">
+              <PropertyRef Name="IdSkill" />
+            </Principal>
+            <Dependent Role="ProfessionalSkills">
+              <PropertyRef Name="IdSkill" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="RecruitmentDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Candidate" EntityType="Self.Candidate" />
+          <EntitySet Name="DetailedSkill" EntityType="Self.DetailedSkill" />
+          <EntitySet Name="Education" EntityType="Self.Education" />
+          <EntitySet Name="KnowledgeOfLanguages" EntityType="Self.KnowledgeOfLanguages" />
+          <EntitySet Name="ProfessionalSkills" EntityType="Self.ProfessionalSkills" />
+          <EntitySet Name="Skills" EntityType="Self.Skills" />
+          <EntitySet Name="WorkExperience" EntityType="Self.WorkExperience" />
+          <EntitySet Name="BasicInfo" EntityType="Self.BasicInfo" />
+          <AssociationSet Name="FK_BasicInfo_Candidate" Association="Self.FK_BasicInfo_Candidate">
+            <End Role="Candidate" EntitySet="Candidate" />
+            <End Role="BasicInfo" EntitySet="BasicInfo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Candidate_Education" Association="Self.FK_Candidate_Education">
+            <End Role="Education" EntitySet="Education" />
+            <End Role="Candidate" EntitySet="Candidate" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Candidate_ProfessionalSkills" Association="Self.FK_Candidate_ProfessionalSkills">
+            <End Role="ProfessionalSkills" EntitySet="ProfessionalSkills" />
+            <End Role="Candidate" EntitySet="Candidate" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Candidate_WorkExperience" Association="Self.FK_Candidate_WorkExperience">
+            <End Role="WorkExperience" EntitySet="WorkExperience" />
+            <End Role="Candidate" EntitySet="Candidate" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Skills_DetailedSkill" Association="Self.FK_Skills_DetailedSkill">
+            <End Role="DetailedSkill" EntitySet="DetailedSkill" />
+            <End Role="Skills" EntitySet="Skills" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Education_KnowledgeOfLanguages" Association="Self.FK_Education_KnowledgeOfLanguages">
+            <End Role="KnowledgeOfLanguages" EntitySet="KnowledgeOfLanguages" />
+            <End Role="Education" EntitySet="Education" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProfessionalSkills_Skills" Association="Self.FK_ProfessionalSkills_Skills">
+            <End Role="Skills" EntitySet="Skills" />
+            <End Role="ProfessionalSkills" EntitySet="ProfessionalSkills" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище RecruitmentDBModelContainer" CdmEntityContainer="RecruitmentDBEntities">
+          <EntitySetMapping Name="Candidate">
+            <EntityTypeMapping TypeName="RecruitmentDBModel.Candidate">
+              <MappingFragment StoreEntitySet="Candidate">
+                <ScalarProperty Name="IdCandidate" ColumnName="IdCandidate" />
+                <ScalarProperty Name="IdEducation" ColumnName="IdEducation" />
+                <ScalarProperty Name="IdWorkExperience" ColumnName="IdWorkExperience" />
+                <ScalarProperty Name="IdProfessionalSkills" ColumnName="IdProfessionalSkills" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="E_mail" ColumnName="E-mail" />
+                <ScalarProperty Name="MobilePhone" ColumnName="MobilePhone" />
+                <ScalarProperty Name="HomePhone" ColumnName="HomePhone" />
+                <ScalarProperty Name="Skype" ColumnName="Skype" />
+                <ScalarProperty Name="BirtchDate" ColumnName="BirtchDate" />
+                <ScalarProperty Name="Residence" ColumnName="Residence" />
+                <ScalarProperty Name="MilitaryAttitude" ColumnName="MilitaryAttitude" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DetailedSkill">
+            <EntityTypeMapping TypeName="RecruitmentDBModel.DetailedSkill">
+              <MappingFragment StoreEntitySet="DetailedSkill">
+                <ScalarProperty Name="IdDetailedSkill" ColumnName="IdDetailedSkill" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Lavel_from_1_to_10_" ColumnName="Lavel(from 1 to 10)" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Education">
+            <EntityTypeMapping TypeName="RecruitmentDBModel.Education">
+              <MappingFragment StoreEntitySet="Education">
+                <ScalarProperty Name="IdEducation" ColumnName="IdEducation" />
+                <ScalarProperty Name="IdKnowledgeOfLanguages" ColumnName="IdKnowledgeOfLanguages" />
+                <ScalarProperty Name="EducationalEstablishment" ColumnName="EducationalEstablishment" />
+                <ScalarProperty Name="DegreeInformation" ColumnName="DegreeInformation" />
+                <ScalarProperty Name="AdmissionYear" ColumnName="AdmissionYear" />
+                <ScalarProperty Name="GraduationYear" ColumnName="GraduationYear" />
+                <ScalarProperty Name="PostgraduateWork_ForBY_" ColumnName="PostgraduateWork(ForBY)" />
+                <ScalarProperty Name="Faculty" ColumnName="Faculty" />
+                <ScalarProperty Name="Department" ColumnName="Department" />
+                <ScalarProperty Name="EducationForm" ColumnName="EducationForm" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="KnowledgeOfLanguages">
+            <EntityTypeMapping TypeName="RecruitmentDBModel.KnowledgeOfLanguages">
+              <MappingFragment StoreEntitySet="KnowledgeOfLanguages">
+                <ScalarProperty Name="IdKnowledgeOfLanguages" ColumnName="IdKnowledgeOfLanguages" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="LavelLanguages" ColumnName="LavelLanguages" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProfessionalSkills">
+            <EntityTypeMapping TypeName="RecruitmentDBModel.ProfessionalSkills">
+              <MappingFragment StoreEntitySet="ProfessionalSkills">
+                <ScalarProperty Name="IdProfessionalSkills" ColumnName="IdProfessionalSkills" />
+                <ScalarProperty Name="IdSkill" ColumnName="IdSkill" />
+                <ScalarProperty Name="YearsOfExperience" ColumnName="YearsOfExperience" />
+                <ScalarProperty Name="AdditionalInformation" ColumnName="AdditionalInformation" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Skills">
+            <EntityTypeMapping TypeName="RecruitmentDBModel.Skills">
+              <MappingFragment StoreEntitySet="Skills">
+                <ScalarProperty Name="IdSkill" ColumnName="IdSkill" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="IdDetailedSkill" ColumnName="IdDetailedSkill" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WorkExperience">
+            <EntityTypeMapping TypeName="RecruitmentDBModel.WorkExperience">
+              <MappingFragment StoreEntitySet="WorkExperience">
+                <ScalarProperty Name="IdWorkExperience" ColumnName="IdWorkExperience" />
+                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
+                <ScalarProperty Name="Position" ColumnName="Position" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BasicInfo">
+            <EntityTypeMapping TypeName="RecruitmentDBModel.BasicInfo">
+              <MappingFragment StoreEntitySet="BasicInfo">
+                <ScalarProperty Name="IdCandidate" ColumnName="IdCandidate" />
+                <ScalarProperty Name="Image" ColumnName="Image" />
+                <ScalarProperty Name="Resume" ColumnName="Resume" />
+                <ScalarProperty Name="Outcome" ColumnName="Outcome" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
